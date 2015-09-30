@@ -1,0 +1,65 @@
+
+% from natbib commands to apalike + make it work in captions
+\def \citep {\protect\cite}
+
+%% From demo file
+
+% Arabic page numbers for submission. 
+% Remove this line to eliminate page numbers for the camera ready copy
+\pagenumbering{arabic}
+
+% llt: Define a global style for URLs, rather that the default one
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\bf\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+% To make various LaTeX processors do the right thing with page size.
+\def\pprw{8.5in}
+\def\pprh{11in}
+\special{papersize=\pprw,\pprh}
+\setlength{\paperwidth}{\pprw}
+\setlength{\paperheight}{\pprh}
+\setlength{\pdfpagewidth}{\pprw}
+\setlength{\pdfpageheight}{\pprh}
+
+% Make sure hyperref comes last of your loaded packages, to give it a
+% fighting chance of not being over-written, since its job is to
+% redefine many LaTeX commands.
+\definecolor{linkColor}{RGB}{6,125,233}
+\hypersetup{%
+  bookmarksnumbered,
+  colorlinks,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=black,
+  urlcolor=linkColor,
+  breaklinks=true,
+}
+
+% we'll override the "\caption*" that scholdoc uses with default figure markup
+\WithSuffix\newcommand\caption*{\caption}% *-variant
+
+% In case we got a problem with scholdoc headers' levels
+% from http://tex.stackexchange.com/a/61803
+\newcommand{\leveldown}% Demote sectional commands
+  {\let\section\subsection%
+   \let\subsection\subsubsection%
+   \let\subsubsection\paragraph%
+   \let\paragraph\subparagraph%
+   %\let\subparagraph\relax%
+  }
+  
+\newcommand{\levelup}% Promote sectional commands
+  {\let\subparagraph\paragraph%
+   \let\paragraph\subsubsection%
+   \let\subsubsection\subsection%
+   \let\subsection\section%
+   %\let\section\relax%
+  }
+
+% auto margin with subfigures
+% FIXME: slight shift toward right...
+\let\oldsubfloat\subfloat
+\renewcommand*{\subfloat}{\hfill\oldsubfloat}
